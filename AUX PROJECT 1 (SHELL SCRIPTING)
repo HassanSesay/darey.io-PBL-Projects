@@ -12,3 +12,4 @@ birth_year=$((current_year - age))
 Output a message with their name and birth year
 echo "Hello, $name! You were born in $birth_year."
 
+![image](https://github.com/HassanSesay/darey.io-PBL-Projects/assets/114838820/c19d6414-605f-4fbc-8df9-5f36bcefc71e)
