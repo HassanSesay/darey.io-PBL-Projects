@@ -1,60 +1,56 @@
 ## WEB STACK IMPLEMENTATION (LEMP STACK)
-Here's a step-by-step guide to implementing a LEMP (Linux, Nginx, MySQL, PHP) stack on an AWS EC2 instance using the Ubuntu AMI:
 
-Launch an EC2 instance:
 
-Go to the AWS Management Console and navigate to the EC2 service. Click on "Launch Instance" and select the Ubuntu Server 18.04 LTS (or the latest version) AMI. Choose an instance type, configure other settings as needed, and launch the instance. Connect to the EC2 instance:
+# Step 1: Install Nginx Web Server
 
-Once the instance runs, select it in the EC2 dashboard and click "Connect". You can follow the instructions to connect using SSH. For example, using the terminal on your local machine: ssh -i <path_to_key_file.pem> ubuntu@<public_dns_name>
+Launch an EC2 instance:Go to the AWS Management Console and navigate to the EC2 service. Click on "Launch Instance" and select the Ubuntu Server 18.04 LTS (or the latest version) AMI. Choose an instance type, configure other settings as needed, and launch the instance. Connect to the EC2 instance: Once the instance runs, select it in the EC2 dashboard and click "Connect". You can follow the instructions to connect using SSH. For example, using the terminal on your local machine: ssh -i <path_to_key_file.pem> ubuntu@<public_dns_name>
 
 Replace <path_to_key_file.pem> with the path to your private key file, and <public_dns_name> with the public DNS name of your EC2 instance.
 
-Update the system packages:
+Update the package lists: sudo apt update (for Ubuntu) or sudo yum update (for CentOS).
 
-sudo apt update
+Install Nginx: sudo apt install nginx (for Ubuntu) or sudo yum install nginx (for CentOS).
 
-sudo apt upgrade
+Start Nginx: sudo service nginx start (for Ubuntu) or sudo service nginx start (for CentOS).
 
-Install Nginx:
+Configure Nginx to start on boot: sudo systemctl enable nginx (for Ubuntu) or sudo chkconfig nginx on (for CentOS).
 
-sudo apt install nginx
+# Step 2: Install MySQL
 
-Start Nginx and enable it to start on boot: sudo systemctl start nginx
+Install MySQL: sudo apt install mysql-server (for Ubuntu) or sudo yum install mysql-server (for CentOS).
 
-sudo systemctl enable nginx
+Start MySQL: sudo service mysql start (for Ubuntu) or sudo service mysqld start (for CentOS).
 
-Verify Nginx is running:
+Secure MySQL installation: sudo mysql_secure_installation (follow the prompts to set a root password and secure your installation).
 
-You can just open a web browser and enter your EC2 instance's public IP or public DNS in the address bar. You should see the default Nginx welcome page indicating a successful installation.
+# Step 3: Install PHP
 
-Install MySQL:
+Install PHP and its dependencies: sudo apt install php-fpm php-mysql (for Ubuntu) or sudo yum install php-fpm php-mysql (for CentOS).
+Start PHP-FPM: sudo service php-fpm start (for Ubuntu) or sudo service php-fpm start (for CentOS).
 
-sudo apt install mysql-server
+# Step 4: Configure Nginx to Use PHP Processor
 
-Secure the MySQL installation: sudo mysql_secure_installation
+Open the Nginx default configuration file: sudo nano /etc/nginx/sites-available/default (for Ubuntu) or sudo nano /etc/nginx/conf.d/default.conf (for CentOS).
+Find the location block that starts with location ~ \.php$ {.
+Uncomment and modify the lines to look like this:
+Save the file and exit the text editor.
+Restart Nginx: sudo service nginx restart (for Ubuntu) or sudo service nginx restart (for CentOS).
 
-Follow the prompts to set a root password and answer the security-related questions.
+# Step 5: Test PHP with Nginx
 
-Install PHP and required extensions:
+Create a PHP test file: sudo nano /var/www/html/info.php.
 
-sudo apt install php-fpm php-mysql
+Save the file and exit the text editor.
+Open a web browser and navigate to http://your_server_ip/info.php.
+You should see the PHP information page if PHP is configured correctly.
 
-Configure Nginx to use PHP: sudo nano /etc/nginx/sites-available/default
+# Step 6: Retrieve Data from MySQL Database with PHP
 
-Inside the server block, replace index index.html with index index.php index.html, and add the following lines:
+Write the PHP code to connect to the MySQL database, retrieve data, and display it on a webpage. The exact code will depend on your specific requirements.
+For database operations, you can use the PHP MySQL extension or a more modern MySQL library like PDO or MySQLi.
+Please ensure the PHP code has the credentials (host, database name, username, and password) to connect to the MySQL database.
 
-location ~ .php$ { include snippets/fastcgi-php.conf; fastcgi_pass unix:/var/run/php/php7.2-fpm.sock; }
-
-Restart Nginx and PHP-FPM for the changes to take effect:
-
-sudo systemctl restart nginx sudo systemctl restart php7.2-fpm
-
-Test PHP:
-
-Create a PHP info file in the web root directory:
-
-echo "" | sudo tee /var/www/html/phpinfo.php
+By following these steps, you will have successfully implemented a LEMP stack and tested PHP with Nginx
 
 ![test 2](https://github.com/HassanSesay/darey.io-PBL-Projects/assets/114838820/e189299e-5ebc-419c-82fb-29f7269c76fe)
-
 
